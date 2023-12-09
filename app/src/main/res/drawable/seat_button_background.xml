@@ -1,0 +1,18 @@
+<!-- res/drawable/seat_button_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"><!-- Background color of the button -->
+    <corners
+        android:topRightRadius="20dp"
+        android:topLeftRadius="20dp"
+        android:bottomRightRadius="0dp"
+        android:bottomLeftRadius="0dp"/>
+    <!-- Adjust the radius to make it more or less rounded -->
+
+    <!-- Add padding to create the illusion of a seat -->
+    <padding
+        android:left="5dp"
+        android:top="10dp"
+        android:right="5dp"
+        android:bottom="10dp" />
+
+    <!-- You can add more elements (e.g., lines) to further customize the seat appearance -->
+</shape>
