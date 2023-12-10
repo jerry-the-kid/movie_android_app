@@ -2,20 +2,24 @@ package com.demo.movieapp.ui.movie_detail;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.demo.movieapp.R;
 import com.demo.movieapp.adapter.CategoriesBtnAdapter;
 import com.demo.movieapp.databinding.ActivityMovieDetailBinding;
 import com.demo.movieapp.model.CategoryButton;
-import com.google.android.gms.common.util.DataUtils;
+import com.demo.movieapp.model.GlobalState;
+import com.demo.movieapp.model.Movie;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MovieDetailActivity extends AppCompatActivity {
+    GlobalState globalState = GlobalState.getInstance();
     ActivityMovieDetailBinding binding;
 
     @Override
@@ -35,6 +39,11 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         ));
         binding.detailRecycledView.setAdapter(categoriesBtnAdapter);
+        binding.buttonPrev.setOnClickListener(v -> finish());
+
+        Movie movie = globalState.getMovieList().get(0);
+        binding.movieDetailTitle.setText(movie.getTitle());
+
     }
 
 

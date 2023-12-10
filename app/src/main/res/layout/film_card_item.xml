@@ -23,7 +23,7 @@
 
 
             <ImageView
-                android:id="@+id/film_card_1"
+                android:id="@+id/film_card_image"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:scaleType="centerCrop"
@@ -36,7 +36,7 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/film_card_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -46,53 +46,59 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/film_card_1" />
+                app:layout_constraintTop_toBottomOf="@+id/film_card_image" />
 
             <ImageView
-                android:id="@+id/star"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:id="@+id/imageView6"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:src="@drawable/star"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/tomato"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/film_card_title"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/film_card_rotten_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="97%"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                app:layout_constraintStart_toEndOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="@+id/imageView6"
+                app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
-                android:id="@+id/star1"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:layout_constraintStart_toEndOf="@+id/star"
-                app:layout_constraintTop_toTopOf="@+id/star"
-                app:srcCompat="@drawable/star" />
+                android:id="@+id/imageView7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="28dp"
+                android:src="@drawable/popcorn"
+                app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                app:layout_constraintStart_toEndOf="@+id/film_card_rotten_score"
+                app:layout_constraintTop_toTopOf="@+id/film_card_rotten_score"
+                app:layout_constraintVertical_bias="1.0" />
 
-            <ImageView
-                android:id="@+id/star2"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:layout_constraintStart_toEndOf="@+id/star1"
-                app:layout_constraintTop_toTopOf="@+id/star1"
-                app:srcCompat="@drawable/star" />
+            <TextView
+                android:id="@+id/film_card_audience_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="85%"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                app:layout_constraintTop_toTopOf="@+id/imageView7"
+                app:layout_constraintVertical_bias="1.0" />
 
-            <ImageView
-                android:id="@+id/star3"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:layout_constraintStart_toEndOf="@+id/star2"
-                app:layout_constraintTop_toTopOf="@+id/star2"
-                app:srcCompat="@drawable/star" />
-
-            <ImageView
-                android:id="@+id/star4"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:layout_constraintStart_toEndOf="@+id/star3"
-                app:layout_constraintTop_toTopOf="@+id/star3"
-                app:srcCompat="@drawable/star_2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
     </androidx.cardview.widget.CardView>
