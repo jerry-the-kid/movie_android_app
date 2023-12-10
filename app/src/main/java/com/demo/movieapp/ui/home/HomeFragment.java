@@ -157,7 +157,6 @@ public class HomeFragment extends Fragment {
                     movies.addAll(globalState.getMovieList().stream().filter(movie -> isSearchTextIncluded(movie.getSearchString(), searchText))
                             .collect(Collectors.toList()));
                 }
-                Toast.makeText(getContext(), movies.size() + "", Toast.LENGTH_SHORT).show();
                 movieCardAdapter.notifyDataSetChanged();
             }
         });
