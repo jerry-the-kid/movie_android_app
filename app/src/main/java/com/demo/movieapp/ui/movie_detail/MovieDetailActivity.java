@@ -1,12 +1,12 @@
 package com.demo.movieapp.ui.movie_detail;
 
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.os.Bundle;
-import android.widget.Toast;
 
 import com.demo.movieapp.R;
 import com.demo.movieapp.adapter.CategoriesBtnAdapter;
@@ -14,9 +14,11 @@ import com.demo.movieapp.databinding.ActivityMovieDetailBinding;
 import com.demo.movieapp.model.CategoryButton;
 import com.demo.movieapp.model.GlobalState;
 import com.demo.movieapp.model.Movie;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Objects;
 
 public class MovieDetailActivity extends AppCompatActivity {
     GlobalState globalState = GlobalState.getInstance();
@@ -28,22 +30,37 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         hideActionBar();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
+
+        binding.buttonPrev.setOnClickListener(v -> finish());
+
+        Intent intent = getIntent();
+        int position = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("position")));
+
+        Movie movie = globalState.getMovieList().get(position);
+        binding.setMovie(movie);
+        binding.filmCardActors.setText(String.join(", ", movie.getActors()));
+        binding.textView8.setText(Double.toString(movie.getStarPoint()));
+        binding.youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                String videoId = movie.getYoutubeID();
+                youTubePlayer.cueVideo(videoId, 0);
+
+            }
+        });
+
+
         binding.detailRecycledView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
 
-        CategoriesBtnAdapter categoriesBtnAdapter = new CategoriesBtnAdapter(new ArrayList<>(
-                Arrays.asList(new CategoryButton("Horror", false),
-                        new CategoryButton("Romance", false),
-                        new CategoryButton("Comedy", false),
-                        new CategoryButton("Crime", false))
+        ArrayList<CategoryButton> categoriesButton = new ArrayList<>();
 
-        ));
+        for (String category : movie.getCategories()) {
+            categoriesButton.add(new CategoryButton(category, false));
+        }
+
+        CategoriesBtnAdapter categoriesBtnAdapter = new CategoriesBtnAdapter(categoriesButton);
         binding.detailRecycledView.setAdapter(categoriesBtnAdapter);
-        binding.buttonPrev.setOnClickListener(v -> finish());
-
-        Movie movie = globalState.getMovieList().get(0);
-        binding.movieDetailTitle.setText(movie.getTitle());
-
     }
 
 

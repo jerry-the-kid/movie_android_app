@@ -3,15 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <data>
 
+        <variable
+            name="movie"
+            type="com.demo.movieapp.model.Movie" />
+    </data>
+
+    <ScrollView
+        android:background="@color/color_primary"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_primary"
-        android:paddingBottom="20dp"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_primary"
+            android:paddingBottom="20dp"
         tools:context=".ui.movie_detail.MovieDetailActivity">
 
         <Button
@@ -60,40 +68,40 @@
             android:id="@+id/youtube_player_view"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-
             android:layout_marginStart="28dp"
             android:layout_marginTop="36dp"
             android:layout_marginEnd="28dp"
-            app:autoPlay="false"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"
-            app:videoId="Pi_sIP-wjC0" />
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-        <TextView
-            android:id="@+id/movie_detail_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="28dp"
-            android:text="Aquaman"
-            android:textColor="@color/white"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/youtube_player_view" />
+            <TextView
+                android:id="@+id/movie_detail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="28dp"
+                android:text="@={movie.title}"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/youtube_player_view" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="32dp"
-            android:text="4.5"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@+id/movie_detail_title"
-            app:layout_constraintTop_toBottomOf="@+id/youtube_player_view" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="64dp"
+                android:text="4.5"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/youtube_player_view" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -117,32 +125,89 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_detail_title" />
 
+
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Synopsis Aquaman"
+            android:text="Director"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/detail_recycledView"
             app:layout_constraintTop_toBottomOf="@+id/detail_recycledView" />
 
-        <TextView
-            android:id="@+id/detail_para"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="28dp"
-            android:singleLine="false"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend nisi nulla, id interdum quam blandit eget. Aenean finibus viverra nunc non interdum. Nullam non diam odio. Aliquam sit amet finibus elit. Duis egestas turpis quis lacinia dapibus. Nunc at quam et libero consequat semper. Nam eget pharetra eros. Cras hendrerit purus vitae egestas feugiat"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="36dp"
+                android:text="Actors"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/film__card_actors"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView19"
+                app:layout_constraintTop_toTopOf="@+id/film__card_actors" />
+
+            <TextView
+                android:id="@+id/film__card_actors"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="geagaegae"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/textView21"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView21"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Summary"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView20"
+                app:layout_constraintTop_toBottomOf="@+id/film__card_actors" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="28dp"
+                android:text="@{movie.director}"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView19"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView19"
+                app:layout_constraintTop_toTopOf="@+id/textView19"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/detail_para"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="28dp"
+                android:singleLine="false"
+                android:text="@={movie.summary}"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fixedButton"
@@ -150,7 +215,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="36dp"
             android:layout_marginEnd="28dp"
             android:backgroundTint="@color/color_secondary"
             android:text="Buy Ticket"
@@ -158,8 +223,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_para" />
     </androidx.constraintlayout.widget.ConstraintLayout>

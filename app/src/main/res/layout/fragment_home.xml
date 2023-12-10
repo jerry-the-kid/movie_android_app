@@ -83,7 +83,7 @@
                 android:background="@color/color_gray"
                 android:drawableStart="@drawable/magnifying_glass"
                 android:drawablePadding="8dp"
-                android:hint="Search"
+                android:hint="Search by category, people, title"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:textColor="@color/white"

@@ -2,12 +2,12 @@ package com.demo.movieapp.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,14 +32,31 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
     GlobalState globalState = GlobalState.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("movies");
+    private CollectionReference categoryCollectionReference = db.collection("category");
     private FragmentHomeBinding binding;
     ArrayList<Movie> movies;
 
+    public static boolean isSearchTextIncluded(String searchString, String searchText) {
+        // Convert both the search string and search text to lowercase for case-insensitive comparison
+        searchString = searchString.toLowerCase();
+        searchText = searchText.toLowerCase();
+
+        return searchString.contains(searchText);
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,12 +89,13 @@ public class HomeFragment extends Fragment {
 
         movies = new ArrayList<>();
 
+
         binding.cardFilm1RecycledView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         MovieCardAdapter movieCardAdapter = new MovieCardAdapter(movies);
-        movieCardAdapter.setClickListener((movie, position) -> {
+        movieCardAdapter.setClickListener((position) -> {
             Intent intent = new Intent(getContext(), MovieDetailActivity.class);
-            intent.putExtra("id", movie.getId());
+            intent.putExtra("position", "" + position);
             startActivity(intent);
         });
         binding.cardFilm1RecycledView.setAdapter(movieCardAdapter);
@@ -103,7 +121,7 @@ public class HomeFragment extends Fragment {
                 }
 
                 movieCardAdapter.notifyDataSetChanged();
-                globalState.setMovieList(movies);
+                globalState.setMovieList((List<Movie>) movies.clone());
 
             } else {
                 // Handle errors
@@ -115,21 +133,35 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+
+        binding.searchEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String searchText = s.toString().trim();
+                movies.clear();
+                if (searchText.isEmpty()) {
+                    movies.addAll(globalState.getMovieList());
+                } else {
+                    movies.addAll(globalState.getMovieList().stream().filter(movie -> isSearchTextIncluded(movie.getSearchString(), searchText))
+                            .collect(Collectors.toList()));
+                }
+                Toast.makeText(getContext(), movies.size() + "", Toast.LENGTH_SHORT).show();
+                movieCardAdapter.notifyDataSetChanged();
+            }
+        });
+
         return root;
     }
-
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-//    @Override
-//    public void onClick(View v, int pos) {
-//        Intent intent = new Intent(getContext(), MovieDetailActivity.class);
-//        intent.putExtra("id", movies.get(pos).getId());
-//        startActivity(intent);
-//    }
 }

@@ -5,14 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.demo.movieapp.R;
 import com.demo.movieapp.model.Movie;
 
@@ -22,7 +19,7 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
     public OnItemClickListener clickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(Movie movie, int position);
+        void onItemClick(int position);
     }
 
     public void setClickListener(OnItemClickListener myListener){
@@ -75,8 +72,7 @@ public class MovieCardAdapter extends RecyclerView.Adapter<MovieCardAdapter.Movi
                 if (clickListener != null) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        Movie clickedMovie = movies.get(position);
-                        clickListener.onItemClick(clickedMovie, position);
+                        clickListener.onItemClick(position);
                     }
                 }
             });
