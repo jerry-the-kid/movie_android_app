@@ -14,11 +14,13 @@ import com.demo.movieapp.databinding.ActivityMovieDetailBinding;
 import com.demo.movieapp.model.CategoryButton;
 import com.demo.movieapp.model.GlobalState;
 import com.demo.movieapp.model.Movie;
+import com.demo.movieapp.ui.cinema_schedule.CinemaList;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MovieDetailActivity extends AppCompatActivity {
     GlobalState globalState = GlobalState.getInstance();
@@ -31,12 +33,25 @@ public class MovieDetailActivity extends AppCompatActivity {
         hideActionBar();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
-        binding.buttonPrev.setOnClickListener(v -> finish());
+        binding.buttonPrev.setOnClickListener(v -> {
+            globalState.setCurrentMovie(null);
+            finish();
+        });
 
-        Intent intent = getIntent();
-        int position = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra("position")));
+        AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
+        int position = Integer.parseInt(Objects.requireNonNull(intent.get().getStringExtra("position")));
 
         Movie movie = globalState.getMovieList().get(position);
+        globalState.setCurrentMovie(movie);
+
+        binding.fixedButton.setOnClickListener(v -> {
+            intent.set(new Intent(this, CinemaList.class));
+            intent.get().putExtra("movieId", movie.getId());
+            intent.get().putExtra("movieTitle", movie.getTitle());
+            startActivity(intent.get());
+        });
+
+
         binding.setMovie(movie);
         binding.filmCardActors.setText(String.join(", ", movie.getActors()));
         binding.textView8.setText(Double.toString(movie.getStarPoint()));

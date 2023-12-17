@@ -1,22 +1,28 @@
 package com.demo.movieapp.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Ticket {
     String title;
-    Date time;
-    int imageLink;
-    double stars;
-    String[] seats;
+    String time;
+    String imageUrl;
+    ArrayList<String> reservedSeats;
     String cinema;
+    int roomId;
+    Date date;
 
-    public Ticket(String title, Date time, int imageLink, double stars, String[] seats, String cinema) {
+    public Ticket() {
+    }
+
+    public Ticket(String title, String time, String imageUrl, ArrayList<String> reservedSeats, String cinema, int roomId, Date date) {
         this.title = title;
         this.time = time;
-        this.imageLink = imageLink;
-        this.stars = stars;
-        this.seats = seats;
+        this.imageUrl = imageUrl;
+        this.reservedSeats = reservedSeats;
         this.cinema = cinema;
+        this.roomId = roomId;
+        this.date = date;
     }
 
 
@@ -28,36 +34,28 @@ public class Ticket {
         this.title = title;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public int getImageLink() {
-        return imageLink;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageLink(int imageLink) {
-        this.imageLink = imageLink;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public double getStars() {
-        return stars;
+    public ArrayList<String> getReservedSeats() {
+        return reservedSeats;
     }
 
-    public void setStars(double stars) {
-        this.stars = stars;
-    }
-
-    public String[] getSeats() {
-        return seats;
-    }
-
-    public void setSeats(String[] seats) {
-        this.seats = seats;
+    public void setReservedSeats(ArrayList<String> reservedSeats) {
+        this.reservedSeats = reservedSeats;
     }
 
     public String getCinema() {
@@ -67,4 +65,22 @@ public class Ticket {
     public void setCinema(String cinema) {
         this.cinema = cinema;
     }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
+
+

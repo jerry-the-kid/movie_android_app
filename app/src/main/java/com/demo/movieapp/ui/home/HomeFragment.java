@@ -23,10 +23,14 @@ import com.demo.movieapp.adapter.CategoriesBtnAdapter;
 import com.demo.movieapp.adapter.MovieCardAdapter;
 import com.demo.movieapp.databinding.FragmentHomeBinding;
 import com.demo.movieapp.model.CategoryButton;
+import com.demo.movieapp.model.Cinema;
 import com.demo.movieapp.model.GlobalState;
 import com.demo.movieapp.model.Movie;
+import com.demo.movieapp.model.Room;
+import com.demo.movieapp.model.Showtime;
 import com.demo.movieapp.ui.movie_detail.MovieDetailActivity;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -39,7 +43,8 @@ public class HomeFragment extends Fragment {
     GlobalState globalState = GlobalState.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("movies");
-    private CollectionReference categoryCollectionReference = db.collection("category");
+    private CollectionReference cinemaReference = db.collection("cinema");
+    private CollectionReference showsTimeReference = db.collection("showsTime");
     private FragmentHomeBinding binding;
     ArrayList<Movie> movies;
 
@@ -55,6 +60,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        movies.clear();
         binding = null;
     }
 
@@ -95,27 +101,18 @@ public class HomeFragment extends Fragment {
         MovieCardAdapter movieCardAdapter = new MovieCardAdapter(movies);
         movieCardAdapter.setClickListener((position) -> {
             Intent intent = new Intent(getContext(), MovieDetailActivity.class);
-            intent.putExtra("position", "" + position);
+            intent.putExtra("position", String.valueOf(position));
             startActivity(intent);
         });
         binding.cardFilm1RecycledView.setAdapter(movieCardAdapter);
 
 
-//        Movie movie01 = new Movie();
-//        movie01.setTitle("Daryl Dixon");
-//        movie01.setSummary("Daryl's journey across a broken but resilient France as he hopes to find a way back home.");
-//        movie01.setDirector("David Zabel");
-//        movie01.setImageUrl("https://m.media-amazon.com/images/M/MV5BMTllZDU4ZjgtYzEyOC00OTVkLWE3MDctMzk0NTM2MjUzNDkwXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg");
-//        movie01.setReleaseYear(2023);
-//        movie01.setYoutubeID("iTOaFootkSk");
-//        movie01.setTomatometer(77);
-//        movie01.setAudienceScore(70);
-
-
         collectionReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                movies.clear();
                 for (DocumentSnapshot document : task.getResult()) {
                     Movie movieTemp = document.toObject(Movie.class);
+                    assert movieTemp != null;
                     movieTemp.setId(document.getId());
                     movies.add(movieTemp);
                 }
@@ -161,6 +158,47 @@ public class HomeFragment extends Fragment {
             }
         });
 
+//        createCinemaAndShowsTime();
+
         return root;
+    }
+
+    public void createCinemaAndShowsTime() {
+        Cinema cinema = new Cinema();
+        cinema.setName("Cinema Lapen Center Vũng Tàu");
+        cinema.setCity("Vũng Tàu");
+
+        cinemaReference.add(cinema).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentReference document = task.getResult();
+                Showtime showtime = new Showtime();
+                showtime.setCinemaName(cinema.getName());
+                showtime.setCinemaId(document.getId());
+                showtime.setMovieId("N8zNjvWyZDzCvXfEoPGt");
+                ArrayList<Room> rooms = new ArrayList<>(Arrays.asList(
+                        new Room(2, "9:00", "11:04", new ArrayList<>()),
+                        new Room(1, "12:00", "14:04", new ArrayList<>()),
+                        new Room(2, "14:30", "16:34", new ArrayList<>()),
+                        new Room(3, "16:45", "18:49", new ArrayList<>())
+                ));
+                showtime.setRooms(rooms);
+                showtime.setDay(1);
+                showsTimeReference.add(showtime);
+            }
+        });
+    }
+
+    public void createMovie() {
+        Movie movie01 = new Movie();
+        movie01.setTitle("Daryl Dixon");
+        movie01.setSummary("Daryl's journey across a broken but resilient France as he hopes to find a way back home.");
+        movie01.setDirector("David Zabel");
+        movie01.setImageUrl("https://m.media-amazon.com/images/M/MV5BMTllZDU4ZjgtYzEyOC00OTVkLWE3MDctMzk0NTM2MjUzNDkwXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg");
+        movie01.setReleaseYear(2023);
+        movie01.setYoutubeID("iTOaFootkSk");
+        movie01.setTomatometer(77);
+        movie01.setAudienceScore(70);
+
+        collectionReference.add(movie01);
     }
 }

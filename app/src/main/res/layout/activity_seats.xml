@@ -13,10 +13,9 @@
     tools:context=".ui.seats.SeatsActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonPrev"
         style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="50dp"
-
         android:layout_height="50dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="28dp"
@@ -51,7 +50,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/buttonPrev"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -152,28 +151,36 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/seats_room"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginEnd="28dp"
         android:text="Lux"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView16"
         app:layout_constraintTop_toTopOf="@+id/textView16"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/seats"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="68dp"
-        android:text="B7, B6"
+        android:layout_marginEnd="28dp"
+        android:singleLine="false"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="@+id/textView14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.003"
         app:layout_constraintStart_toEndOf="@+id/textView14"
         app:layout_constraintTop_toTopOf="@+id/textView14"
         app:layout_constraintVertical_bias="1.0" />
@@ -197,40 +204,39 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="52dp"
-        android:text="Hall: "
+        android:text="Room: "
         android:textColor="#B6BBC4"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
+        android:id="@+id/seats_price"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="15dp"
         android:text="Total: $26"
         android:textColor="@color/white"
-        android:textSize="32sp"
+        android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textView15"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView14"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
     <Button
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
         android:layout_marginEnd="28dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
         android:text="Continue"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="@+id/textView17"
+        app:layout_constraintBottom_toBottomOf="@+id/seats_price"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toTopOf="@+id/textView17"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/seats_price" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

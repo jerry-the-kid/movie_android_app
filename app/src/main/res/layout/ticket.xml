@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="40dp"
-    android:background="@color/color_primary"
-    >
+    android:background="@color/color_primary">
 
     <TextView
         android:id="@+id/ticket_date"
@@ -20,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/color_gray"
@@ -31,6 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ticket_date">
 
         <ImageView
+
             android:id="@+id/ticket_avatar"
             android:layout_width="120dp"
             android:layout_height="150dp"
@@ -51,32 +50,26 @@
             android:textColor="@color/white"
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="@+id/ticket_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/ticket_avatar"
             app:layout_constraintTop_toTopOf="@+id/ticket_avatar"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/star"
-            app:layout_constraintStart_toStartOf="@+id/ticket_title"
-            app:layout_constraintTop_toBottomOf="@+id/ticket_title" />
-
         <TextView
-            android:id="@+id/ticket_star"
+            android:id="@+id/ticket_ciname_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="4.5"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Cinema Lapen Center Vũng Tàu"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-            app:layout_constraintStart_toEndOf="@+id/imageView5"
-            app:layout_constraintTop_toTopOf="@+id/imageView5"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintBottom_toTopOf="@+id/ticket_information"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/ticket_avatar" />
 
         <TextView
             android:id="@+id/ticket_information"
@@ -87,6 +80,8 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/ticket_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/ticket_avatar"
             app:layout_constraintTop_toTopOf="@+id/ticket_avatar"
             app:layout_constraintVertical_bias="1.0" />
