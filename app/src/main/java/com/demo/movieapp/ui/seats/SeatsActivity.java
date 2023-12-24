@@ -97,10 +97,9 @@ public class SeatsActivity extends AppCompatActivity {
 
             Ticket ticket = new Ticket(currentMovie.getTitle(), currentHour.getStartTime(),
                     currentMovie.getImageUrl(), seatsNumber, currentHour.getCinemaName(), currentHour.getRoomId(), new Date());
-
+            globalState.setCurrentTicket(ticket);
             Intent intent = new Intent(this, CheckoutActivity.class);
             startActivity(intent);
-//            createNewTicket(ticket);
         });
 
 

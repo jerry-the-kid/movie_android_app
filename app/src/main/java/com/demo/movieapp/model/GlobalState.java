@@ -7,6 +7,7 @@ public class GlobalState {
     private List<Movie> movieList;
     private Movie currentMovie;
     private Hour hour;
+    private Ticket currentTicket;
 
     private GlobalState() {
         // private constructor to prevent instantiation
@@ -45,5 +46,13 @@ public class GlobalState {
 
     public void setCurrentMovie(Movie currentMovie) {
         this.currentMovie = currentMovie;
+    }
+
+    public Ticket getCurrentTicket() {
+        return currentTicket;
+    }
+
+    public void setCurrentTicket(Ticket currentTicket) {
+        this.currentTicket = currentTicket;
     }
 }

@@ -6,20 +6,22 @@ public class OnlineCard {
     String cvv;
     String userName;
     boolean isSelected;
+    Double amountRemain;
 
     public OnlineCard() {
     }
 
 
-    public OnlineCard(String cardNumber, String cvv, String userName, boolean isSelected) {
+    public OnlineCard(String cardNumber, String cvv, String userName, double amountRemain, boolean isSelected) {
         this.cardNumber = cardNumber;
         this.cvv = cvv;
         this.userName = userName;
         this.isSelected = isSelected;
+        this.amountRemain = amountRemain;
     }
 
-    public OnlineCard(String cardNumber, String cvv, String userName) {
-        this(cardNumber, cvv, userName, false);
+    public OnlineCard(String cardNumber, String cvv, String userName, Double amountRemain) {
+        this(cardNumber, cvv, userName, amountRemain, false);
     }
 
 
@@ -53,6 +55,18 @@ public class OnlineCard {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public Double getAmountRemain() {
+        return amountRemain;
+    }
+
+    public void setAmountRemain(Double amountRemain) {
+        this.amountRemain = amountRemain;
+    }
+
+    public boolean isCardValid(Double ticketAmount) {
+        return ticketAmount < this.amountRemain;
     }
 
     public String getFormatCardNumber() {
