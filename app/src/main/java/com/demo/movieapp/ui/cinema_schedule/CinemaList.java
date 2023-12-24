@@ -69,7 +69,6 @@ public class CinemaList extends AppCompatActivity {
 //        String movieTitle = intent.getStringExtra("movieTitle");
         getShowTimesByMovieId(movieId);
 
-
         movieDateItemAdapter = new MovieDateItemAdapter();
         timepickerAdapter = new TimePickerAdapter(showtimesLocal, hour -> {
             intent.set(new Intent(this, SeatsActivity.class));
@@ -92,7 +91,9 @@ public class CinemaList extends AppCompatActivity {
         spinnerPlace = findViewById(R.id.spinner_place);
         datePickerRecycler = findViewById(R.id.date_picker_recycler_view);
         datePickerRecycler.setAdapter(movieDateItemAdapter);
+        buttonPrevious = findViewById(R.id.button_previous);
 
+        buttonPrevious.setOnClickListener(v -> finish());
         datePickerRecycler.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
 
@@ -136,6 +137,7 @@ public class CinemaList extends AppCompatActivity {
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.getResult().isEmpty()) return;
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
                         Showtime showtime = document.toObject(Showtime.class);
@@ -145,7 +147,8 @@ public class CinemaList extends AppCompatActivity {
                     }
                     showtimesLiveData.setValue(showtimes);
                 } else {
-                    // Handle the error
+//                     Handle the error
+
                     Exception exception = task.getException();
                     if (exception != null) {
                         exception.printStackTrace();

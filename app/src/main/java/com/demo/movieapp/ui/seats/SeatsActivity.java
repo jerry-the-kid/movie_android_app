@@ -1,5 +1,6 @@
 package com.demo.movieapp.ui.seats;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.demo.movieapp.model.Seat;
 import com.demo.movieapp.model.SeatStatus;
 import com.demo.movieapp.model.Showtime;
 import com.demo.movieapp.model.Ticket;
+import com.demo.movieapp.ui.checkout.CheckoutActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -96,7 +98,9 @@ public class SeatsActivity extends AppCompatActivity {
             Ticket ticket = new Ticket(currentMovie.getTitle(), currentHour.getStartTime(),
                     currentMovie.getImageUrl(), seatsNumber, currentHour.getCinemaName(), currentHour.getRoomId(), new Date());
 
-            createNewTicket(ticket);
+            Intent intent = new Intent(this, CheckoutActivity.class);
+            startActivity(intent);
+//            createNewTicket(ticket);
         });
 
 
