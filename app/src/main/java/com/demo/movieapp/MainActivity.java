@@ -32,8 +32,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,34 +80,50 @@ public class MainActivity extends AppCompatActivity {
                     .orderBy("time", Query.Direction.ASCENDING)
                     .get()
                     .addOnSuccessListener(snapshot -> {
+                        int requestCode = 0;
                         for (DocumentSnapshot doc : snapshot.getDocuments()
                         ) {
-                            Date time = ((Timestamp) doc.get("time")).toDate();
-                            String title = (String) doc.get("title");
-                            String cinema = (String) doc.get("cinema");
 
-                            Date newDate = addTime(time, 60);
+                            try {
+                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                                Date time = sdf.parse((String) doc.get("time"));
+                                String title = (String) doc.get("title");
+                                String cinema = (String) doc.get("cinema");
+                                String user_id = (String) doc.get("user_id");
 
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                // Thiết lập thời gian và lịch để gửi notification
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.setTimeInMillis(System.currentTimeMillis());
-                                calendar.setTime(newDate);
-                                calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+                                Date newDate = addTime(time, 60);
+                                Toast.makeText(MainActivity.this, (String) newDate.toString(), Toast.LENGTH_SHORT).show();
 
 
-                                // Lấy AlarmManager và tạo PendingIntent để kích hoạt notification
-                                Intent intent = new Intent(this, NotificationReceiver.class);
-                                intent.putExtra("title", title);
-                                intent.putExtra("time", newDate);
-                                intent.putExtra("cinema", cinema);
-                                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    requestCode++;
+                                    // setup time for notification
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.setTimeInMillis(System.currentTimeMillis());
+                                    calendar.setTime(newDate);
+                                    calendar.set(Calendar.SECOND, 0);
+//                                    calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
 
-                                // Sử dụng AlarmManager để đặt thông báo vào thời gian cụ thể
-                                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
+                                    // get notification
+                                    Intent intent = new Intent(this, NotificationReceiver.class);
+                                    intent.putExtra("title", title);
+                                    intent.putExtra("time", newDate);
+                                    intent.putExtra("cinema", cinema);
+                                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
+
+
+                                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+                                    // Add notification to firebase
+                                    addNotificationToFirestore(title, newDate, cinema, user_id);
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                                Toast.makeText(this, "Error: formatted incorrect!", Toast.LENGTH_SHORT).show();
                             }
+
 
                         }
                     })
@@ -134,12 +155,31 @@ public class MainActivity extends AppCompatActivity {
 
     public static Date addTime(Date current, int extraMinutes) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(current);
-        // Trừ số phút từ ngày giờ hiện tại
+        calendar.set(Calendar.HOUR_OF_DAY, current.getHours());
+        calendar.set(Calendar.MINUTE, current.getMinutes());
+
         calendar.add(Calendar.MINUTE, -extraMinutes);
 
         return calendar.getTime();
 
+    }
+
+    private void addNotificationToFirestore(String title, Date newDate, String cinema, String user_id) {
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("title", title);
+        notification.put("time", newDate);
+        notification.put("cinema", cinema);
+        notification.put("user_id", user_id);
+
+        db.getInstance()
+                .collection("notifications")
+                .add(notification)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("Firestore", "Add notification successfully! " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error!", e);
+                });
     }
 
 

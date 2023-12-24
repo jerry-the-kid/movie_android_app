@@ -27,5 +27,6 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCertification" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCertification"
+        tools:listitem="@layout/notification_item"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,14 +13,14 @@ public class NotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String title = intent.getStringExtra("title");
         String cinema = intent.getStringExtra("cinema");
-        // Xây dựng thông báo
+        // Build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "123")
                 .setContentTitle("Remember to go the cinema!")
                 .setContentText("Your movie " + title + " will be started after 1 hour. Please go to the " + cinema + " to enjoy!! ^^")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
-        // Hiển thị thông báo
+        // Notification
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(123, builder.build());
 

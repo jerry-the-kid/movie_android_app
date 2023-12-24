@@ -137,6 +137,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.putExtra(Intent.EXTRA_TEXT, invitedMessage);
 
-        startActivity(Intent.createChooser(intent, "Chia sẻ qua"));
+        startActivity(Intent.createChooser(intent, "Share via"));
     }
 }
