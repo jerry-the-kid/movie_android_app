@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.demo.movieapp.R;
 import com.demo.movieapp.model.Ticket;
 
@@ -34,18 +35,22 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketHold
     public void onBindViewHolder(@NonNull TicketHolder holder, int position) {
         Ticket ticket = tickets.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-        String formattedDate = dateFormat.format(ticket.getTime());
-        String formattedTime = timeFormat.format(ticket.getTime());
-        String seats = String.join(", ", ticket.getSeats());
-        String information = "Cinema " + ticket.getCinema() +", Seat "+ seats + ", " + formattedTime;
+        String formattedDate = dateFormat.format(ticket.getDate());
+        Glide.with(holder.moviePic)
+                .load(ticket.getImageUrl())
+                .into(holder.moviePic);
 
         holder.title.setText(ticket.getTitle());
+        String result = ticket.getReservedSeats()
+                .stream()
+                .reduce("", (partialString, element) -> partialString + element + ", ");
+
+        holder.information.setText("Cinema " + ticket.getRoomId() + ", Seats "
+                + result.substring(0, result.length() - 2) + ", " + ticket.getTime());
+        holder.cinema.setText(ticket.getCinema());
         holder.date.setText(formattedDate);
-        holder.information.setText(information);
-        holder.moviePic.setImageResource(ticket.getImageLink());
-        holder.score.setText(Double.toString(ticket.getStars()));
+
     }
 
     @Override
@@ -53,15 +58,15 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketHold
         return tickets.size();
     }
 
-    class TicketHolder extends  RecyclerView.ViewHolder{
-        TextView title, information, score, date;
+    class TicketHolder extends RecyclerView.ViewHolder {
+        TextView title, information, score, date, cinema;
         ImageView moviePic;
 
         public TicketHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.ticket_title);
             information = itemView.findViewById(R.id.ticket_information);
-            score = itemView.findViewById(R.id.ticket_star);
+            cinema = itemView.findViewById(R.id.cinema_name);
             moviePic = itemView.findViewById(R.id.ticket_avatar);
             date = itemView.findViewById(R.id.ticket_date);
         }
