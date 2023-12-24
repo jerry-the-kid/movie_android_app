@@ -10,4 +10,6 @@
     <color name="color_primary">#25252D</color>
     <color name="color_secondary">#6A3CFE</color>
     <color name="color_gray">#36394A</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
 </resources>
