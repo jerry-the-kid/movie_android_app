@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             String username = edEmail.getText().toString();
             String password = edPassword.getText().toString();
 
-            loginRepository.login("admin@admin.com", "123456789", new LoginResultCallback() {
+            loginRepository.login(username, password, new LoginResultCallback() {
                 @Override
                 public void onSuccess(LoggedInUser user) {
                     loginRepository.setLoggedInUser(user);
