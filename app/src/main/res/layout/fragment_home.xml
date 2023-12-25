@@ -34,12 +34,12 @@
             app:layout_constraintTop_toTopOf="@+id/avatar" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="4dp"
-            android:text="Rick Grimes"
+            android:text="Guest"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/avatar"

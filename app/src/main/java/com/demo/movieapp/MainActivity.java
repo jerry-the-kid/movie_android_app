@@ -164,32 +164,30 @@ public class MainActivity extends AppCompatActivity {
         authStateListener = firebaseAuth -> {
             user = firebaseAuth.getCurrentUser();
             if (user != null) {
-                Query query = usersCollection.whereEqualTo("id", user.getUid());
+//                Query query = usersCollection.whereEqualTo("id", user.getUid());
 
-                query.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Query q = ticketReference.whereEqualTo("userId", document.getId());
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+                Query q = ticketReference.whereEqualTo("userId", user.getUid());
 
-                            q.get().addOnCompleteListener(t -> {
-                                if (t.isSuccessful()) {
-                                    if (t.getResult().isEmpty()) {
-                                        globalState.usersTicket.setValue(new ArrayList<>());
-                                        return;
-                                    }
-                                    ArrayList<Ticket> tickets_temp = new ArrayList<>();
-                                    for (QueryDocumentSnapshot d : t.getResult()) {
-                                        Ticket ticket = d.toObject(Ticket.class);
-                                        tickets_temp.add(ticket);
-                                    }
-                                    globalState.usersTicket.setValue(tickets_temp);
-                                }
-                            });
-
+                q.get().addOnCompleteListener(t -> {
+                    if (t.isSuccessful()) {
+                        if (t.getResult().isEmpty()) {
+                            globalState.usersTicket.setValue(new ArrayList<>());
+                            return;
                         }
+                        ArrayList<Ticket> tickets_temp = new ArrayList<>();
+                        for (QueryDocumentSnapshot d : t.getResult()) {
+                            Ticket ticket = d.toObject(Ticket.class);
+                            tickets_temp.add(ticket);
+                        }
+                        globalState.usersTicket.setValue(tickets_temp);
                     }
                 });
+
+//                        }
+//                    }
+
             }
         };
     }
