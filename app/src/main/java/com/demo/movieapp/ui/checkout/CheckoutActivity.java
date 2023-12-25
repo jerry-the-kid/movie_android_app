@@ -205,7 +205,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         });
                 return;
             }
-            ticket.setUserId(documentUserId);
+            ticket.setUserId(userData.getValue().getId());
             Query query = showsTimeReference.whereEqualTo("cinemaName", ticket.getCinema())
                     .whereEqualTo("movieName", ticket.getTitle());
 

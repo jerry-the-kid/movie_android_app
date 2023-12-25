@@ -3,10 +3,7 @@ package com.demo.movieapp;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -14,49 +11,42 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.demo.movieapp.databinding.ActivityMainBinding;
-import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import com.demo.movieapp.model.GlobalState;
 import com.demo.movieapp.model.Ticket;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
-
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+//public class MainActivity extends AppCompatActivity {
+//
+//    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//    FirebaseFirestore db = FirebaseFirestore.getInstance();
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ActivityMainBinding binding;
@@ -76,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private CollectionReference ticketReference = db.collection("ticket");
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser user;
-    private String documentUserId = "";
 
     private MutableLiveData<ArrayList<Ticket>> tickets = new MutableLiveData<>();
 
@@ -101,11 +90,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         askNotificationPermission();
 
-        if (mAuth.getCurrentUser() != null) {
-            db.collection("test_ticket")
-                    .whereEqualTo("user_id", mAuth.getCurrentUser().getUid())
+        if (firebaseAuth.getCurrentUser() != null) {
+            db.collection("ticket")
+                    .whereEqualTo("user_id", firebaseAuth.getCurrentUser().getUid())
                     .orderBy("time", Query.Direction.ASCENDING)
                     .get()
                     .addOnSuccessListener(snapshot -> {
@@ -162,9 +152,6 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
-//        firebaseAuth.signOut();
 
         Intent intent = getIntent();
         boolean navigateToTicket = intent.getBooleanExtra("navigateToTicket", false);
@@ -268,6 +255,4 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("Firestore", "Error!", e);
                 });
     }
-
-
 }
