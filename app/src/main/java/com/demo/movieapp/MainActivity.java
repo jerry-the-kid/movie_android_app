@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         askNotificationPermission();
 
         if (mAuth.getCurrentUser() != null) {
-            db.collection("test_ticket")
-                    .whereEqualTo("user_id", mAuth.getCurrentUser().getUid())
+            db.collection("ticket")
+                    .whereEqualTo("userId", mAuth.getCurrentUser().getUid())
                     .orderBy("time", Query.Direction.ASCENDING)
                     .get()
                     .addOnSuccessListener(snapshot -> {
@@ -89,12 +89,10 @@ public class MainActivity extends AppCompatActivity {
                                 Date time = sdf.parse((String) doc.get("time"));
                                 String title = (String) doc.get("title");
                                 String cinema = (String) doc.get("cinema");
-                                String user_id = (String) doc.get("user_id");
+                                String user_id = (String) doc.get("userId");
 
                                 Date newDate = addTime(time, 60);
-                                Toast.makeText(MainActivity.this, (String) newDate.toString(), Toast.LENGTH_SHORT).show();
-
-
+                                
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                     requestCode++;
                                     // setup time for notification
@@ -169,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         notification.put("title", title);
         notification.put("time", newDate);
         notification.put("cinema", cinema);
-        notification.put("user_id", user_id);
+        notification.put("userId", user_id);
 
         db.getInstance()
                 .collection("notifications")
