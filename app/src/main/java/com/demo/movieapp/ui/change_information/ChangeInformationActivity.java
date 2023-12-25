@@ -1,5 +1,7 @@
 package com.demo.movieapp.ui.change_information;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +21,12 @@ import com.demo.movieapp.R;
 import com.demo.movieapp.model.User;
 import com.demo.movieapp.ui.home.HomeFragment;
 import com.demo.movieapp.ui.login.LoginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -103,6 +111,7 @@ public class ChangeInformationActivity extends AppCompatActivity {
                 .addOnSuccessListener(snapshot -> {
                     for (QueryDocumentSnapshot doc : snapshot)
                     {
+                        reAuthentication(email, password);
                         Map<String, Object> updates = new HashMap<>();
                         updates.put("avatar", avatar);
                         updates.put("name", name);
@@ -120,10 +129,33 @@ public class ChangeInformationActivity extends AppCompatActivity {
                                     Log.e("Update User Error", e.toString());
                                     Toast.makeText(ChangeInformationActivity.this, "An unknown error occurred!", Toast.LENGTH_SHORT).show();
                                 });
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        user.updateEmail(email)
+                                .addOnSuccessListener(task -> {
+                                });
+                        user.updatePassword(password)
+                                .addOnSuccessListener(task -> {
+                        });
                     }
                 });
 
 
 
+    }
+
+    private void reAuthentication(String email, String password)
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(email, password);
+
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "User re-authenticated.");
+                    }
+                });
     }
 }
