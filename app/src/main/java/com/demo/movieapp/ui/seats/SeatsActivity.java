@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -23,12 +21,8 @@ import com.demo.movieapp.model.SeatStatus;
 import com.demo.movieapp.model.Showtime;
 import com.demo.movieapp.model.Ticket;
 import com.demo.movieapp.ui.checkout.CheckoutActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.NumberFormat;
@@ -51,7 +45,6 @@ public class SeatsActivity extends AppCompatActivity {
 
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference showsTimeReference = db.collection("ticket");
 
     private MutableLiveData<Showtime> showtime = new MutableLiveData<>();
 
@@ -147,32 +140,9 @@ public class SeatsActivity extends AppCompatActivity {
         recyclerView.setAdapter(seatsAdapter);
 
 
-        authStateListener = firebaseAuth -> {
-            user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                Toast.makeText(SeatsActivity.this, user.getEmail(), Toast.LENGTH_SHORT).show();
-            } else {
-
-            }
-        };
-    }
-
-    private void createNewTicket(Ticket ticket) {
-        showsTimeReference.add(ticket).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(SeatsActivity.this, "Ticket create successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Exception exception = task.getException();
-                    if (exception != null) {
-                        exception.printStackTrace();
-                    }
-                }
-            }
-        });
 
     }
+
 
 //    public void getShowTimeByHour(String showTimeId, Hour hour) {
 //        showsTimeReference.document(showTimeId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -195,21 +165,6 @@ public class SeatsActivity extends AppCompatActivity {
     public void hideActionBar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        user = firebaseAuth.getCurrentUser();
-        firebaseAuth.addAuthStateListener(authStateListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (firebaseAuth != null) {
-            firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
 }

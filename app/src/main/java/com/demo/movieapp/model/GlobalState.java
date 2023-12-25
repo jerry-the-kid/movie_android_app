@@ -1,5 +1,9 @@
 package com.demo.movieapp.model;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class GlobalState {
@@ -8,6 +12,14 @@ public class GlobalState {
     private Movie currentMovie;
     private Hour hour;
     private Ticket currentTicket;
+
+
+    public MutableLiveData<ArrayList<Ticket>> usersTicket = new MutableLiveData<>();
+
+
+    public LiveData<ArrayList<Ticket>> getUsersTicket() {
+        return usersTicket;
+    }
 
     private GlobalState() {
         // private constructor to prevent instantiation
@@ -55,4 +67,5 @@ public class GlobalState {
     public void setCurrentTicket(Ticket currentTicket) {
         this.currentTicket = currentTicket;
     }
+
 }

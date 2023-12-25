@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.demo.movieapp.MainActivity;
 import com.demo.movieapp.R;
 import com.demo.movieapp.adapter.OnlineCardAdapter;
 import com.demo.movieapp.databinding.ActivityCheckoutBinding;
@@ -19,12 +21,17 @@ import com.demo.movieapp.dialog.AddPayCardDialog;
 import com.demo.movieapp.dialog.WarningDialog;
 import com.demo.movieapp.model.GlobalState;
 import com.demo.movieapp.model.OnlineCard;
+import com.demo.movieapp.model.Room;
+import com.demo.movieapp.model.Showtime;
 import com.demo.movieapp.model.Ticket;
 import com.demo.movieapp.model.User;
 import com.demo.movieapp.ui.login.LoginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -41,10 +48,12 @@ public class CheckoutActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference usersCollection = db.collection("user");
     CollectionReference cardsCollection = db.collection("card");
+    private CollectionReference showsTimeReference = db.collection("showsTime");
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser user;
     private String documentUserId = "";
+    private CollectionReference ticketReference = db.collection("ticket");
     private MutableLiveData<User> userData = new MutableLiveData<>();
 
 
@@ -71,7 +80,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 query.get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "" + task.getResult().size(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, "" + task.getResult().size(), Toast.LENGTH_SHORT).show();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             documentUserId = document.getId();
                             User userFromDb = document.toObject(User.class);
@@ -108,6 +117,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
         binding.buttonPrev.setOnClickListener(v -> finish());
+        binding.btnModify.setOnClickListener(v -> finish());
 
         ArrayList<OnlineCard> cards = new ArrayList<>();
 
@@ -121,8 +131,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
         this.getUserLiveData().observe(this, user -> {
-
-            Toast.makeText(this, user.getName(), Toast.LENGTH_SHORT).show();
             binding.ticketUserEmail.setText(user.getEmail());
             binding.ticketUsername.setText(user.getName());
             binding.ticketPhoneNumber.setText(user.getPhone());
@@ -197,9 +205,59 @@ public class CheckoutActivity extends AppCompatActivity {
                         });
                 return;
             }
+            ticket.setUserId(documentUserId);
+            Query query = showsTimeReference.whereEqualTo("cinemaName", ticket.getCinema())
+                    .whereEqualTo("movieName", ticket.getTitle());
 
-            Toast.makeText(this, card.getCardNumber(), Toast.LENGTH_SHORT).show();
+            createNewTicket(ticket);
+
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Showtime showtime = document.toObject(Showtime.class);
+                        ArrayList<Room> rooms = showtime.getRooms();
+                        ArrayList<Room> updatedRooms = new ArrayList<>();
+                        for (Room room : rooms) {
+                            if (room.getRoomId() == ticket.getRoomId()) {
+                                room.getReservedSeats().addAll(ticket.getReservedSeats());
+                            }
+                            updatedRooms.add(room);
+                        }
+
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("rooms", updatedRooms);
+
+                        showsTimeReference.document(document.getId()).update(updates);
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.putExtra("navigateToTicket", true);
+                        startActivity(intent);
+                    }
+                } else {
+                    // Handle errors
+                    Toast.makeText(this, "Error getting showstime: " + task.getException(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
         });
+    }
+
+
+    private void createNewTicket(Ticket ticket) {
+        ticketReference.add(ticket).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(CheckoutActivity.this, "Ticket create successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Exception exception = task.getException();
+                    if (exception != null) {
+                        exception.printStackTrace();
+                    }
+                }
+            }
+        });
+
     }
 
     public void hideActionBar() {

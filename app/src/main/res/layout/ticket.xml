@@ -42,9 +42,10 @@
 
         <TextView
             android:id="@+id/ticket_title"
-            android:layout_width="210dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="40dp"
             android:singleLine="false"
             android:text="Bleach thousand year blood war"
             android:textColor="@color/white"
@@ -58,9 +59,10 @@
 
         <TextView
             android:id="@+id/ticket_ciname_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="8dp"
             android:text="Cinema Lapen Center Vũng Tàu"
             android:textColor="@color/white"

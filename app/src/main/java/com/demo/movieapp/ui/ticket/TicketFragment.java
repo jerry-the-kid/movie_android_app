@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.demo.movieapp.adapter.TicketAdapter;
 import com.demo.movieapp.databinding.FragmentTicketBinding;
+import com.demo.movieapp.model.GlobalState;
 import com.demo.movieapp.model.Ticket;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class TicketFragment extends Fragment {
@@ -23,18 +23,19 @@ public class TicketFragment extends Fragment {
 
     private FragmentTicketBinding binding;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        GlobalState globalState = GlobalState.getInstance();
+
         TicketViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(TicketViewModel.class);
 
         binding = FragmentTicketBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ArrayList<Ticket> tickets = new ArrayList<Ticket>(Arrays.asList(
-//                new Ticket("Bleach thousand year blood", new Date(), R.drawable.pic, new String[]{"A1", "A2", "A3"}, "01"),
-//                new Ticket("Bleach thousand year blood", new Date(), R.drawable.pic, new String[]{"A1", "A2"}, "02")
-        ));
+        ArrayList<Ticket> tickets = new ArrayList<>();
 
         adapter = new TicketAdapter(tickets);
 
@@ -43,14 +44,21 @@ public class TicketFragment extends Fragment {
 
         binding.recyclerView.setAdapter(adapter);
 
-
+        globalState.getUsersTicket().observe(getViewLifecycleOwner(), ticketList -> {
+            tickets.clear();
+            tickets.addAll(ticketList);
+            adapter.notifyDataSetChanged();
+        });
 
         return root;
     }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
+
+
 }
