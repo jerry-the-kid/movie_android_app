@@ -181,6 +181,8 @@ public class HomeFragment extends Fragment {
 //        createCinemaAndShowsTime();
 
         authStateListener = firebaseAuth -> {
+            if (user == null) return;
+
             user = firebaseAuth.getCurrentUser();
             Glide.with(binding.avatar)
                     .load(user.getPhotoUrl())
