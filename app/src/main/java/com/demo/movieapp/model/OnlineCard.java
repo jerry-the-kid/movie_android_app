@@ -30,7 +30,7 @@ public class OnlineCard {
     }
 
     public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+        this.cardNumber = cardNumber.trim();
     }
 
     public String getCvv() {
@@ -38,7 +38,7 @@ public class OnlineCard {
     }
 
     public void setCvv(String cvv) {
-        this.cvv = cvv;
+        this.cvv = cvv.trim();
     }
 
     public String getUserName() {
@@ -46,7 +46,7 @@ public class OnlineCard {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = userName.trim();
     }
 
     public boolean isSelected() {

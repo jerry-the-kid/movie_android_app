@@ -1,10 +1,12 @@
 package com.demo.movieapp.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+// Check online cards
 public class User implements Serializable {
     private String id;
     private String avatar;
@@ -15,6 +17,11 @@ public class User implements Serializable {
     private String phone;
     private String password;
     private Boolean status;
+    private static User instance;
+    private ArrayList<OnlineCard> onlineCards;
+
+    public User() {
+    }
 
     public User(String id, String avatar, String name, Boolean gender, Date birthdate, String email, String phone, String password, Boolean status) {
         this.id = id;
@@ -26,6 +33,12 @@ public class User implements Serializable {
         this.phone = phone;
         this.password = password;
         this.status = status;
+    }
+
+
+    public User(String id, String avatar, String name, Boolean gender, Date birthdate, String email, String phone, String password, Boolean status, ArrayList<OnlineCard> onlineCards) {
+        this(id, avatar, name, gender, birthdate, email, phone, password, status);
+        this.onlineCards = onlineCards;
     }
 
     public String getId() {
@@ -98,6 +111,22 @@ public class User implements Serializable {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public static User getInstance() {
+        if (instance == null) {
+            instance = new User();
+        }
+
+        return instance;
+    }
+
+    public ArrayList<OnlineCard> getOnlineCards() {
+        return onlineCards;
+    }
+
+    public void setOnlineCards(ArrayList<OnlineCard> onlineCards) {
+        this.onlineCards = onlineCards;
     }
 
     public Map<String, Object> toMap() {

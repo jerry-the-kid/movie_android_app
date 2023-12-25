@@ -1,7 +1,5 @@
 package com.demo.movieapp.ui.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.demo.movieapp.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.demo.movieapp.R;
 import com.demo.movieapp.data.LoginDataSource;
 import com.demo.movieapp.data.LoginRepository;
@@ -57,8 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                 public void onSuccess(LoggedInUser user) {
                     loginRepository.setLoggedInUser(user);
                     Toast.makeText(LoginActivity.this, R.string.login_success, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    finish();
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(intent);
                 }
 
                 @Override

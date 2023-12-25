@@ -25,6 +25,8 @@ import com.demo.movieapp.model.Ticket;
 import com.demo.movieapp.ui.checkout.CheckoutActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,6 +44,11 @@ public class SeatsActivity extends AppCompatActivity {
     List<Seat> seatList;
     SeatsAdapter seatsAdapter;
     ArrayList<String> seatsNumber;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseUser user;
+
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference showsTimeReference = db.collection("ticket");
@@ -74,11 +81,13 @@ public class SeatsActivity extends AppCompatActivity {
 
         seatsNumber = new ArrayList<>();
         GlobalState globalState = GlobalState.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         Hour currentHour = globalState.getHour();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seats);
         hideActionBar();
+
 
         buttonSubmit = findViewById(R.id.button3);
         seats = findViewById(R.id.seats);
@@ -136,6 +145,16 @@ public class SeatsActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(seatsAdapter);
+
+
+        authStateListener = firebaseAuth -> {
+            user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                Toast.makeText(SeatsActivity.this, user.getEmail(), Toast.LENGTH_SHORT).show();
+            } else {
+
+            }
+        };
     }
 
     private void createNewTicket(Ticket ticket) {
@@ -176,6 +195,21 @@ public class SeatsActivity extends AppCompatActivity {
     public void hideActionBar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        user = firebaseAuth.getCurrentUser();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (firebaseAuth != null) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
 }

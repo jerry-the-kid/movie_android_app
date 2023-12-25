@@ -10,9 +10,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.demo.movieapp.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity  {
-
+    private FirebaseAuth firebaseAuth;
     private ActivityMainBinding binding;
     NavController navController;
 
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity  {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
+//        firebaseAuth = FirebaseAuth.getInstance();
 //        Intent intent = new Intent(this, CheckoutActivity.class);
 //        startActivity(intent);
     }

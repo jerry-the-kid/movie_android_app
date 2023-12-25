@@ -30,6 +30,9 @@
             <!--            </intent-filter>-->
         </activity>
         <activity
+            android:name=".ui.checkout.CheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.seats.SeatsActivity"
             android:exported="false" />
         <activity
