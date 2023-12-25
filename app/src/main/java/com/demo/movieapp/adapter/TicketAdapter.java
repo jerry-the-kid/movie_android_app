@@ -34,14 +34,16 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketHold
     @Override
     public void onBindViewHolder(@NonNull TicketHolder holder, int position) {
         Ticket ticket = tickets.get(position);
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
 
         String formattedDate = dateFormat.format(ticket.getDate());
+
+        holder.title.setText(ticket.getTitle());
+
         Glide.with(holder.moviePic)
                 .load(ticket.getImageUrl())
                 .into(holder.moviePic);
-
-        holder.title.setText(ticket.getTitle());
         String result = ticket.getReservedSeats()
                 .stream()
                 .reduce("", (partialString, element) -> partialString + element + ", ");
@@ -59,14 +61,14 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketHold
     }
 
     class TicketHolder extends RecyclerView.ViewHolder {
-        TextView title, information, score, date, cinema;
+        TextView title, information, date, cinema;
         ImageView moviePic;
 
         public TicketHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.ticket_title);
             information = itemView.findViewById(R.id.ticket_information);
-            cinema = itemView.findViewById(R.id.cinema_name);
+            cinema = itemView.findViewById(R.id.ticket_title);
             moviePic = itemView.findViewById(R.id.ticket_avatar);
             date = itemView.findViewById(R.id.ticket_date);
         }

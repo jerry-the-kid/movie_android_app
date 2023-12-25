@@ -1,11 +1,10 @@
 package com.demo.movieapp.ui.seats;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -21,10 +20,9 @@ import com.demo.movieapp.model.Seat;
 import com.demo.movieapp.model.SeatStatus;
 import com.demo.movieapp.model.Showtime;
 import com.demo.movieapp.model.Ticket;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
+import com.demo.movieapp.ui.checkout.CheckoutActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.NumberFormat;
@@ -41,8 +39,12 @@ public class SeatsActivity extends AppCompatActivity {
     SeatsAdapter seatsAdapter;
     ArrayList<String> seatsNumber;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseUser user;
+
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference showsTimeReference = db.collection("ticket");
 
     private MutableLiveData<Showtime> showtime = new MutableLiveData<>();
 
@@ -72,11 +74,13 @@ public class SeatsActivity extends AppCompatActivity {
 
         seatsNumber = new ArrayList<>();
         GlobalState globalState = GlobalState.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         Hour currentHour = globalState.getHour();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seats);
         hideActionBar();
+
 
         buttonSubmit = findViewById(R.id.button3);
         seats = findViewById(R.id.seats);
@@ -95,8 +99,9 @@ public class SeatsActivity extends AppCompatActivity {
 
             Ticket ticket = new Ticket(currentMovie.getTitle(), currentHour.getStartTime(),
                     currentMovie.getImageUrl(), seatsNumber, currentHour.getCinemaName(), currentHour.getRoomId(), new Date());
-
-            createNewTicket(ticket);
+            globalState.setCurrentTicket(ticket);
+            Intent intent = new Intent(this, CheckoutActivity.class);
+            startActivity(intent);
         });
 
 
@@ -133,24 +138,11 @@ public class SeatsActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(seatsAdapter);
-    }
 
-    private void createNewTicket(Ticket ticket) {
-        showsTimeReference.add(ticket).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(SeatsActivity.this, "Ticket create successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Exception exception = task.getException();
-                    if (exception != null) {
-                        exception.printStackTrace();
-                    }
-                }
-            }
-        });
+
 
     }
+
 
 //    public void getShowTimeByHour(String showTimeId, Hour hour) {
 //        showsTimeReference.document(showTimeId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -26,6 +26,7 @@ import com.demo.movieapp.model.CategoryButton;
 import com.demo.movieapp.model.Cinema;
 import com.demo.movieapp.model.GlobalState;
 import com.demo.movieapp.model.Movie;
+import com.demo.movieapp.model.OnlineCard;
 import com.demo.movieapp.model.Room;
 import com.demo.movieapp.model.Showtime;
 import com.demo.movieapp.ui.movie_detail.MovieDetailActivity;
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
     private CollectionReference collectionReference = db.collection("movies");
     private CollectionReference cinemaReference = db.collection("cinema");
     private CollectionReference showsTimeReference = db.collection("showsTime");
+    private CollectionReference cardsReference = db.collection("card");
     private FragmentHomeBinding binding;
     ArrayList<Movie> movies;
 
@@ -73,6 +75,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+//        this.createCard();
 
         Glide.with(binding.avatar)
                 .load(R.drawable.avatar)
@@ -161,6 +164,33 @@ public class HomeFragment extends Fragment {
 //        createCinemaAndShowsTime();
 
         return root;
+    }
+
+    public void createCard() {
+        OnlineCard onlineCard = new OnlineCard();
+        onlineCard.setCardNumber("4921 8305 6712 5489");
+        onlineCard.setCvv("487");
+        onlineCard.setUserName("Nguyen Van A");
+        onlineCard.setAmountRemain(500000.0);
+        onlineCard.setSelected(false);
+
+        OnlineCard onlineCard2 = new OnlineCard();
+        onlineCard2.setCardNumber("7652 1398 2047 9856");
+        onlineCard2.setCvv("926");
+        onlineCard2.setUserName("Nguyen Van B");
+        onlineCard2.setAmountRemain(100000.0);
+        onlineCard2.setSelected(false);
+
+        OnlineCard onlineCard3 = new OnlineCard();
+        onlineCard3.setCardNumber("6310 2845 9076 2134");
+        onlineCard3.setCvv("351");
+        onlineCard3.setUserName("Nguyen Van C");
+        onlineCard3.setAmountRemain(0.0);
+        onlineCard3.setSelected(false);
+
+        cardsReference.add(onlineCard);
+        cardsReference.add(onlineCard2);
+        cardsReference.add(onlineCard3);
     }
 
     public void createCinemaAndShowsTime() {

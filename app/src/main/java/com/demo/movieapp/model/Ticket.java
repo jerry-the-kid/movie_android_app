@@ -1,5 +1,6 @@
 package com.demo.movieapp.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,6 +12,7 @@ public class Ticket {
     String cinema;
     int roomId;
     Date date;
+    String userId;
 
     public Ticket() {
     }
@@ -80,6 +82,24 @@ public class Ticket {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public int getTotalPrice() {
+        return this.reservedSeats.size() * 50000;
+    }
+
+    public String getTotalPriceString() {
+        int totalPrice = this.getTotalPrice();
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(totalPrice);
     }
 }
 
