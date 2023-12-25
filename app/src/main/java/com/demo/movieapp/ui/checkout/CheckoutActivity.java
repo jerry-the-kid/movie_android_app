@@ -2,6 +2,7 @@ package com.demo.movieapp.ui.checkout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -228,10 +230,14 @@ public class CheckoutActivity extends AppCompatActivity {
                         Map<String, Object> updates = new HashMap<>();
                         updates.put("rooms", updatedRooms);
 
+
                         showsTimeReference.document(document.getId()).update(updates);
                         Intent intent = new Intent(this, MainActivity.class);
                         intent.putExtra("navigateToTicket", true);
                         startActivity(intent);
+
+                        this.addNotificationToFirestore("Booking ticket success !!",
+                                new Date(), ticket.getCinema(), userData.getValue().getId());
                     }
                 } else {
                     // Handle errors
@@ -264,6 +270,24 @@ public class CheckoutActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+    }
+
+    private void addNotificationToFirestore(String title, Date newDate, String cinema, String user_id) {
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("title", title);
+        notification.put("time", newDate);
+        notification.put("cinema", cinema);
+        notification.put("user_id", user_id);
+
+        db.getInstance()
+                .collection("notifications")
+                .add(notification)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("Firestore", "Add notification successfully! " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error!", e);
+                });
     }
 
     @Override
