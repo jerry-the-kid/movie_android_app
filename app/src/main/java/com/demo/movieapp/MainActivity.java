@@ -1,5 +1,6 @@
 package com.demo.movieapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +10,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.demo.movieapp.databinding.ActivityMainBinding;
+import com.demo.movieapp.ui.change_information.ChangeInformationActivity;
+import com.demo.movieapp.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -34,6 +39,7 @@ public class MainActivity extends AppCompatActivity  {
 
 //        Intent intent = new Intent(this, CheckoutActivity.class);
 //        startActivity(intent);
+
     }
 
 

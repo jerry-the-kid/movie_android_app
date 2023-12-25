@@ -110,9 +110,6 @@ public class RegisterActivity extends AppCompatActivity {
         if (name.isEmpty()) {
             Toast.makeText(this, "Name is not empty!", Toast.LENGTH_SHORT).show();
         }
-//        else if (!cbMale.isActivated() && !cbFemale.isActivated()) {
-//            Toast.makeText(this, "Please choose your gender!", Toast.LENGTH_SHORT).show();
-//        }
         else if (email.isEmpty()) {
             Toast.makeText(this, "Email is not empty!", Toast.LENGTH_SHORT).show();
         } else if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
