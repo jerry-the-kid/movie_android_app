@@ -45,7 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private  FirebaseFirestore db;
+    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -125,7 +125,6 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (!password.equals(confirmPassword)) {
             Toast.makeText(this, "Confirm Password is not correct!", Toast.LENGTH_SHORT).show();
         } else {
-//            createUser(email, password, "", name, gender, birthdate, phone);
             uploadImage(email, password, name, gender, birthdate, phone);
         }
     }
@@ -133,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void addUser(String id, String avatar, String name, Boolean gender, Date birthdate, String email, String phone, String password) {
         DocumentReference docRef = db.collection("user").document();
 
-        user = new User(docRef.getId(), avatar, name, gender, birthdate, email, phone, password, true);
+        user = new User(id, avatar, name, gender, birthdate, email, phone, password, true);
         docRef.set(user)
                 .addOnSuccessListener(result -> {
                     Toast.makeText(RegisterActivity.this, "Add User Successfully!", Toast.LENGTH_SHORT).show();
@@ -151,7 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
             addUser(firebaseUser.getUid(), avatar, name, gender, birthdate, email, phone, password);
             mAuth.getCurrentUser().updateProfile(new UserProfileChangeRequest.Builder().setPhotoUri(Uri.parse(avatar)).build());
         }).addOnFailureListener(e -> {
-
+            Toast.makeText(RegisterActivity.this, "ERROR2", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -172,7 +171,7 @@ public class RegisterActivity extends AppCompatActivity {
                 createUser(email, password, downloadLink, name, gender, birthdate, phone);
 
             }).addOnFailureListener(e -> {
-
+                Toast.makeText(RegisterActivity.this, "ERROR1", Toast.LENGTH_SHORT).show();
             });
         });
     }
