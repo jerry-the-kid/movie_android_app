@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.demo.movieapp.MainActivity;
 import com.demo.movieapp.R;
 import com.demo.movieapp.adapter.CategoriesBtnAdapter;
 import com.demo.movieapp.adapter.MovieCardAdapter;
@@ -29,7 +30,10 @@ import com.demo.movieapp.model.Movie;
 import com.demo.movieapp.model.OnlineCard;
 import com.demo.movieapp.model.Room;
 import com.demo.movieapp.model.Showtime;
+import com.demo.movieapp.ui.change_information.ChangeInformationActivity;
+import com.demo.movieapp.ui.login.LoginActivity;
 import com.demo.movieapp.ui.movie_detail.MovieDetailActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,6 +46,7 @@ import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
     GlobalState globalState = GlobalState.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("movies");
     private CollectionReference cinemaReference = db.collection("cinema");
@@ -158,6 +163,20 @@ public class HomeFragment extends Fragment {
                             .collect(Collectors.toList()));
                 }
                 movieCardAdapter.notifyDataSetChanged();
+            }
+        });
+
+        binding.avatar.setOnClickListener(view -> {
+            if(mAuth.getCurrentUser() != null)
+            {
+                Intent intent = new Intent(requireActivity(), ChangeInformationActivity.class);
+                intent.putExtra("UUID", mAuth.getCurrentUser().getUid());
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(requireActivity(), LoginActivity.class);
+                startActivity(intent);
             }
         });
 
