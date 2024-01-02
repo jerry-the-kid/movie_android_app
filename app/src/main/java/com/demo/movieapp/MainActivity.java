@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (firebaseAuth.getCurrentUser() != null) {
             db.collection("ticket")
-                    .whereEqualTo("user_id", firebaseAuth.getCurrentUser().getUid())
+                    .whereEqualTo("userId", firebaseAuth.getCurrentUser().getUid())
                     .orderBy("time", Query.Direction.ASCENDING)
                     .get()
                     .addOnSuccessListener(snapshot -> {
@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                                 String user_id = (String) doc.get("user_id");
 
                                 Date newDate = addTime(time, 60);
-                                Toast.makeText(MainActivity.this, (String) newDate.toString(), Toast.LENGTH_SHORT).show();
 
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
