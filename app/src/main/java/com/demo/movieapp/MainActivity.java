@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                                 Date time = sdf.parse((String) doc.get("time"));
                                 String title = (String) doc.get("title");
                                 String cinema = (String) doc.get("cinema");
-                                String user_id = (String) doc.get("user_id");
+                                String user_id = (String) doc.get("userId");
 
                                 Date newDate = addTime(time, 60);
 
